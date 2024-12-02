@@ -18,7 +18,14 @@ func (d Challenge) A() {
 		return
 	}
 
-	fmt.Println("reports: ", reports[2])
+	safeCount := 0
+	for _, r := range reports {
+		if isSafe(r) {
+			safeCount++
+		}
+	}
+
+	fmt.Println("Safe Reports: ", safeCount)
 }
 
 func (d Challenge) B() {
@@ -27,36 +34,32 @@ func (d Challenge) B() {
 
 func isSafe(r report) bool {
 
-	isIncreasing := true
-	isDecreasing := true
+	isIncreasing := r[1]-r[0] >= 0
 
 	for i := 1; i < len(r); i++ {
 		dist := r[i] - r[i-1]
-		if r[i] > r[i-1] {
-			isDecreasing = false
-		} else if r[i] < r[i-1] {
-			isIncreasing = false
+		if isIncreasing && dist < 0 {
+			return false
+		}
+		if !isIncreasing && dist > 0 {
+			return false
+		}
+
+		if dist < 0 {
 			dist = dist * -1
 		}
 
-		if dist >= 3 || dist == 0 || (!isIncreasing && !isDecreasing) {
+		if dist > 3 || dist == 0 {
 			return false
 		}
 	}
 	return true
 }
 
-func abs(x int) int {
-	if x < 0 {
-		return -x
-	}
-	return x
-}
-
 type report []int
 
 func readInput() ([]report, error) {
-	ir, err := helpers.NewReader(INPUTS)
+	ir, err := helpers.NewInputReader(INPUTS)
 	if err != nil {
 		return nil, err
 	}
