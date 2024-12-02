@@ -5,7 +5,7 @@ import (
 	"os"
 	"strconv"
 
-	"github.com/mikezm/advent-of-code/day1"
+	"github.com/mikezm/advent-of-code-2024/day1"
 )
 
 type challenge interface {
