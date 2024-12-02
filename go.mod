@@ -1,3 +1,3 @@
-module github.com/mikezm/advent-of-code
+module github.com/mikezm/advent-of-code-2024
 
-go 1.21.3
+go 1.23.3
