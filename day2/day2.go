@@ -29,11 +29,23 @@ func (d Challenge) A() {
 }
 
 func (d Challenge) B() {
-	fmt.Println("function B() not yet implemented")
+	reports, err := readInput()
+	if err != nil {
+		fmt.Println("Error reading input: ", err)
+		return
+	}
+
+	safeCount := 0
+	for _, r := range reports {
+		if isSafeWhenDampened(r) {
+			safeCount++
+		}
+	}
+
+	fmt.Println("Safe Reports: ", safeCount)
 }
 
 func isSafe(r report) bool {
-
 	isIncreasing := r[1]-r[0] >= 0
 
 	for i := 1; i < len(r); i++ {
@@ -56,13 +68,38 @@ func isSafe(r report) bool {
 	return true
 }
 
+func isSafeWhenDampened(r report) bool {
+
+	if isSafe(r) {
+		return true
+	}
+
+	for index := range r {
+		newReport := removeElement(r, index)
+		if isSafe(newReport) {
+			return true
+		}
+	}
+
+	return false
+}
+
+func removeElement(r report, index int) report {
+	var newReport report
+	for i := 0; i < index; i++ {
+		newReport = append(newReport, r[i])
+	}
+	for j := index + 1; j < len(r); j++ {
+		newReport = append(newReport, r[j])
+	}
+
+	return newReport
+}
+
 type report []int
 
 func readInput() ([]report, error) {
-	ir, err := helpers.NewInputReader(INPUTS)
-	if err != nil {
-		return nil, err
-	}
+	ir := helpers.NewInputReader(INPUTS)
 
 	var data []report
 	for _, line := range ir.Lines() {

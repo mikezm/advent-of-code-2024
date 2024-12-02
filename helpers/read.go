@@ -11,7 +11,7 @@ type InputReader struct {
 	scanner bufio.Scanner
 }
 
-func NewInputReader(f string) (*InputReader, error) {
+func NewInputReader(f string) *InputReader {
 	file, err := os.Open(f)
 	if err != nil {
 		log.Fatal(err)
@@ -21,7 +21,7 @@ func NewInputReader(f string) (*InputReader, error) {
 	return &InputReader{
 		f:       *file,
 		scanner: *scanner,
-	}, nil
+	}
 }
 
 func (ir *InputReader) Lines() []string {
